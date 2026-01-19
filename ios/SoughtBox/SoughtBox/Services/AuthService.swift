@@ -77,11 +77,11 @@ actor AuthService {
         return response
     }
 
-    func logout() {
+    nonisolated func logout() {
         KeychainService.clearAll()
     }
 
-    func isLoggedIn() -> Bool {
+    nonisolated func isLoggedIn() -> Bool {
         KeychainService.get(.accessToken) != nil
     }
 

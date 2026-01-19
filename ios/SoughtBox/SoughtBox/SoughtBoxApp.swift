@@ -1,17 +1,23 @@
-//
-//  SoughtBoxApp.swift
-//  SoughtBox
-//
-//  Created by Nick Cramaro on 2026-01-17.
-//
-
 import SwiftUI
 
 @main
 struct SoughtBoxApp: App {
+    @State private var authViewModel = AuthViewModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if !authViewModel.isLoggedIn {
+                    LoginView(viewModel: authViewModel)
+                } else if authViewModel.household == nil {
+                    HouseholdSetupView(viewModel: authViewModel)
+                } else {
+                    MainTabView(authViewModel: authViewModel)
+                }
+            }
+            .task {
+                await authViewModel.checkAuth()
+            }
         }
     }
 }
